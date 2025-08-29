@@ -1,17 +1,17 @@
-<!doctype html>
-<html lang="fr">
-<head><meta charset="utf-8"><title>Symptômes de mes patients</title></head>
-<body>
+{% extends 'base.html' %}
+{% block title %}Symptômes de mes patients{% endblock %}
+{% block content %}
   <h1>Symptômes de mes patients</h1>
-    <p><a href="{% url 'symptoms_html:export_doctor_symptoms_csv' %}">Exporter en CSV</a></p>
-    
+
+  <p><a class="btn" href="{% url 'symptoms_html:export_doctor_symptoms_csv' %}">Exporter en CSV</a></p>
+
   <form method="get" style="margin-bottom:1rem">
     <input type="text" name="q" value="{{ q }}" placeholder="Rechercher patient ou texte…">
     <select name="severity">
       <option value="">Toutes sévérités</option>
-      <option value="mild" {% if severity=='mild' %}selected{% endif %}>Léger</option>
-      <option value="moderate" {% if severity=='moderate' %}selected{% endif %}>Modéré</option>
-      <option value="severe" {% if severity=='severe' %}selected{% endif %}>Sévère</option>
+      <option value="mild" {% if severity == 'mild' %}selected{% endif %}>Léger</option>
+      <option value="moderate" {% if severity == 'moderate' %}selected{% endif %}>Modéré</option>
+      <option value="severe" {% if severity == 'severe' %}selected{% endif %}>Sévère</option>
     </select>
     <button type="submit">Filtrer</button>
   </form>
@@ -35,5 +35,4 @@
   {% else %}
     <div class="card">Aucun symptôme déclaré.</div>
   {% endif %}
-</body>
-</html>
+{% endblock %}
