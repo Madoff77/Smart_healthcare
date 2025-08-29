@@ -19,9 +19,15 @@ urlpatterns = [
     path('', include('appointments.urls_html')),
     path('', include('symptoms.urls_html')),
 
+
+    path('accounts/', include('accounts.urls')),
+    
     # Auth (login/logout/password reset prêt à l'emploi)
     path('accounts/', include('django.contrib.auth.urls')),
 
     # Accueil
     path('', TemplateView.as_view(template_name='pages/home.html'), name='home'),
+        
+   
+
 ]

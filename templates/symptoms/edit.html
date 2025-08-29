@@ -1,12 +1,14 @@
-<!doctype html>
-<html lang="fr">
-<head><meta charset="utf-8"><title>Modifier le symptôme</title></head>
-<body>
-  <h1>Modifier le symptôme</h1>
-  <form method="post">{% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Enregistrer</button>
-    <a href="{% url 'symptoms_html:my_symptoms' %}">Annuler</a>
-  </form>
-</body>
-</html>
+{% extends 'base.html' %}
+{% block title %}Modifier un symptôme{% endblock %}
+{% block content %}
+  <h1>Modifier un symptôme</h1>
+  <div class="card" style="max-width:720px">
+    <form method="post">{% csrf_token %}
+      {{ form.as_p }}
+      <div class="actions">
+        <button class="btn primary" type="submit">Enregistrer</button>
+        <a class="btn" href="{% url 'symptoms_html:my_symptoms' %}">Annuler</a>
+      </div>
+    </form>
+  </div>
+{% endblock %}

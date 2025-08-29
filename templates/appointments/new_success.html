@@ -1,8 +1,9 @@
-<!doctype html>
-<html lang="fr">
-<head><meta charset="utf-8"><title>RDV créé</title></head>
-<body>
-  <h1>Votre demande de rendez-vous a été enregistrée (statut : en attente).</h1>
-  <p><a href="/appointments/new/">Prendre un autre RDV</a></p>
-</body>
-</html>
+{% extends 'base.html' %}
+{% block title %}Demande envoyée{% endblock %}
+{% block content %}
+  <div class="card">
+    <h2>Votre demande de rendez-vous a été enregistrée.</h2>
+    <p>Un médecin validera le créneau ou vous proposera une alternative.</p>
+    <p><a class="btn" href="/me/appointments/">Voir mes rendez-vous</a></p>
+  </div>
+{% endblock %}

@@ -1,13 +1,15 @@
-<!doctype html>
-<html lang="fr">
-<head><meta charset="utf-8"><title>Supprimer le symptôme</title></head>
-<body>
-  <h1>Supprimer ce symptôme ?</h1>
-  <p><strong>{{ item.created_at|date:"d/m/Y H:i" }}</strong> — {{ item.get_severity_display|default:"—" }}</p>
-  <p>{{ item.description|linebreaksbr }}</p>
-  <form method="post">{% csrf_token %}
-    <button type="submit">Confirmer la suppression</button>
-    <a href="{% url 'symptoms_html:my_symptoms' %}">Annuler</a>
-  </form>
-</body>
-</html>
+{% extends 'base.html' %}
+{% block title %}Supprimer un symptôme{% endblock %}
+{% block content %}
+  <div class="card" style="max-width:520px">
+    <h2>Confirmer la suppression</h2>
+    <p>Voulez-vous vraiment supprimer ce symptôme ?</p>
+    <p><em>{{ item.created_at|date:"d/m/Y H:i" }} — {{ item.description }}</em></p>
+    <form method="post">{% csrf_token %}
+      <div class="actions">
+        <button class="btn danger" type="submit">Supprimer</button>
+        <a class="btn" href="{% url 'symptoms_html:my_symptoms' %}">Annuler</a>
+      </div>
+    </form>
+  </div>
+{% endblock %}
