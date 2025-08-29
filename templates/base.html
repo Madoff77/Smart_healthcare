@@ -1,0 +1,51 @@
+{% load static %}
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}SmartCare{% endblock %}</title>
+  <link rel="stylesheet" href="{% static 'css/base.css' %}">
+</head>
+<body>
+  <header class="sc-header">
+    <div class="container flex between center">
+      <a class="brand" href="/">SmartCare</a>
+      <nav class="nav">
+        <a href="/">Accueil</a>
+        {% if user.is_authenticated %}
+          {% if user.is_patient %}
+            <a href="/appointments/new/">Nouveau RDV</a>
+            <a href="/me/appointments/">Mes RDV</a>
+            <a href="/symptoms/new/">Ajouter un symptôme</a>
+            <a href="/me/symptoms/">Mes symptômes</a>
+          {% elif user.is_doctor %}
+            <a href="/doctor/appointments/">Mes RDV (Médecin)</a>
+            <a href="/doctor/symptoms/">Symptômes patients</a>
+          {% endif %}
+          <a href="/admin/">Admin</a>
+          <a href="/accounts/logout/">Se déconnecter</a>
+        {% else %}
+          <a href="/accounts/login/">Se connecter</a>
+        {% endif %}
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    {% if messages %}
+      <ul class="messages">
+        {% for message in messages %}
+          <li class="msg {{ message.tags }}">{{ message }}</li>
+        {% endfor %}
+      </ul>
+    {% endif %}
+
+    {% block content %}{% endblock %}
+  </main>
+
+  <footer class="sc-footer">
+    <div class="container">© {{ now|date:'Y' }} SmartCare</div>
+  </footer>
+</body>
+</html>

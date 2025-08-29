@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% block title %}Gérer le RDV{% endblock %}
+{% block content %}
+  <h1>Gestion du rendez-vous #{{ appt.id }}</h1>
+  <p><strong>Patient :</strong> {{ appt.patient.user.get_full_name|default:appt.patient.user.username }}</p>
+  <p><strong>Statut actuel :</strong> {{ appt.get_status_display }}</p>
+  <p><strong>Créneau demandé :</strong> {{ appt.start_time|date:"d/m/Y H:i" }} → {{ appt.end_time|date:"H:i" }}</p>
+
+  {% if can_manage %}
+    <div class="card">
+      <form method="post">{% csrf_token %}
+        {{ form.as_p }}
+        <div class="actions">
+          <button class="btn primary" type="submit">Enregistrer</button>
+        </div>
+      </form>
+    </div>
+  {% else %}
+    <div class="card"> <em>Ce rendez-vous ne peut plus être modifié (annulé ou passé).</em> </div>
+  {% endif %}
+
+  <p><a class="btn" href="/doctor/appointments/">← Retour à mes rendez-vous</a></p>
+{% endblock %}

@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="fr">
+<head><meta charset="utf-8"><title>Mes rendez-vous (Médecin)</title></head>
+<body>
+  <h1>Mes rendez-vous (Médecin)</h1>
+  {% if appts %}
+    <table border="1" cellpadding="6" cellspacing="0">
+      <thead>
+        <tr>
+          <th>Date</th><th>Heure</th><th>Patient</th><th>Statut</th><th>Motif</th><th>Gérer</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for a in appts %}
+        <tr>
+          <td>{{ a.start_time|date:"d/m/Y" }}</td>
+          <td>{{ a.start_time|date:"H:i" }} → {{ a.end_time|date:"H:i" }}</td>
+          <td>{{ a.patient.user.get_full_name|default:a.patient.user.username }}</td>
+          <td>{{ a.get_status_display }}</td>
+          <td>{{ a.reason|default:"—" }}</td>
+          <td>
+            {% if a.can_manage %}
+              <a href="{% url 'appointments_html:manage' a.id %}">Gérer</a>
+            {% else %}
+              —
+            {% endif %}
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  {% else %}
+    <p>Aucun rendez-vous pour le moment.</p>
+  {% endif %}
+</body>
+</html>

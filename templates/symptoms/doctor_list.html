@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="fr">
+<head><meta charset="utf-8"><title>Symptômes de mes patients</title></head>
+<body>
+  <h1>Symptômes de mes patients</h1>
+    <p><a href="{% url 'symptoms_html:export_doctor_symptoms_csv' %}">Exporter en CSV</a></p>
+    
+  <form method="get" style="margin-bottom:1rem">
+    <input type="text" name="q" value="{{ q }}" placeholder="Rechercher patient ou texte…">
+    <select name="severity">
+      <option value="">Toutes sévérités</option>
+      <option value="mild" {% if severity=='mild' %}selected{% endif %}>Léger</option>
+      <option value="moderate" {% if severity=='moderate' %}selected{% endif %}>Modéré</option>
+      <option value="severe" {% if severity=='severe' %}selected{% endif %}>Sévère</option>
+    </select>
+    <button type="submit">Filtrer</button>
+  </form>
+
+  {% if items %}
+    <table class="table">
+      <thead>
+        <tr><th>Date</th><th>Patient</th><th>Sévérité</th><th>Description</th></tr>
+      </thead>
+      <tbody>
+        {% for s in items %}
+          <tr>
+            <td>{{ s.created_at|date:"d/m/Y H:i" }}</td>
+            <td>{{ s.patient.user.get_full_name|default:s.patient.user.username }}</td>
+            <td>{{ s.get_severity_display|default:"—" }}</td>
+            <td>{{ s.description|linebreaksbr }}</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  {% else %}
+    <div class="card">Aucun symptôme déclaré.</div>
+  {% endif %}
+</body>
+</html>

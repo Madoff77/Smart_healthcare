@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% block title %}Nouveau RDV{% endblock %}
+{% block content %}
+  <h1>Prendre un rendez-vous</h1>
+  <div class="card">
+    <form method="post">
+      {% csrf_token %}
+      {{ form.as_p }}
+      <div class="actions">
+        <button class="btn primary" type="submit">Valider</button>
+        <a class="btn" href="/me/appointments/">Annuler</a>
+      </div>
+    </form>
+  </div>
+{% endblock %}

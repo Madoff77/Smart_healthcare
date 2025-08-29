@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% block title %}Mes symptômes{% endblock %}
+{% block content %}
+  <h1>Mes symptômes</h1>
+  <p><a class="btn" href="/symptoms/new/">Ajouter un symptôme</a>
+     <a class="btn" href="/me/symptoms/export.csv">Exporter CSV</a></p>
+  {% if items %}
+    <table class="table">
+      <thead>
+        <tr><th>Date</th><th>Sévérité</th><th>Description</th><th>Actions</th></tr>
+      </thead>
+      <tbody>
+        {% for s in items %}
+          <tr>
+            <td>{{ s.created_at|date:"d/m/Y H:i" }}</td>
+            <td>{{ s.get_severity_display|default:"—" }}</td>
+            <td>{{ s.description|linebreaksbr }}</td>
+            <td>
+              <a class="btn" href="/symptoms/{{ s.id }}/edit/">Modifier</a>
+              <a class="btn danger" href="/symptoms/{{ s.id }}/delete/">Supprimer</a>
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  {% else %}
+    <div class="card">Aucun symptôme enregistré.</div>
+  {% endif %}
+{% endblock %}

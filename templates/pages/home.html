@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% block title %}Accueil · SmartCare{% endblock %}
+{% block content %}
+  <div class="card">
+    <h1>Bienvenue sur SmartCare</h1>
+    {% if user.is_authenticated %}
+      {% if user.is_patient %}
+        <p>Que souhaitez-vous faire ?</p>
+        <p>
+          <a class="btn primary" href="/appointments/new/">Prendre un rendez-vous</a>
+          <a class="btn" href="/me/appointments/">Voir mes rendez-vous</a>
+        </p>
+        <p>
+          <a class="btn primary" href="/symptoms/new/">Ajouter un symptôme</a>
+          <a class="btn" href="/me/symptoms/">Voir mes symptômes</a>
+        </p>
+      {% elif user.is_doctor %}
+        <p>Tableau de bord médecin</p>
+        <p>
+          <a class="btn primary" href="/doctor/appointments/">Mes rendez-vous</a>
+          <a class="btn" href="/doctor/symptoms/">Symptômes de mes patients</a>
+        </p>
+      {% else %}
+        <p>Accès authentifié. Utilisez la navigation.</p>
+      {% endif %}
+    {% else %}
+      <p>Veuillez vous connecter pour accéder à vos services.</p>
+      <p><a class="btn primary" href="/accounts/login/">Se connecter</a></p>
+    {% endif %}
+  </div>
+{% endblock %}
