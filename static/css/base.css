@@ -21,3 +21,7 @@
 input, select, textarea{width:100%;padding:10px;border:1px solid #d1d5db;border-radius:8px}
 label{display:block;margin:8px 0 6px;color:#374151}
 form .actions{margin-top:12px}
+.badge{display:inline-block;padding:2px 8px;border-radius:999px;font-size:12px;border:1px solid #e5e7eb}
+.badge.mild{background:#ecfdf5;border-color:#bbf7d0}
+.badge.moderate{background:#fef9c3;border-color:#fde68a}
+.badge.severe{background:#fee2e2;border-color:#fecaca}

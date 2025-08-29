@@ -7,6 +7,7 @@
       {{ form.as_p }}
       <div class="actions">
         <button class="btn primary" type="submit">Se connecter</button>
+        <p><a href="{% url 'password_reset' %}">Mot de passe oublié ?</a></p>
         <a class="btn" href="/accounts/signup/">Créer un compte</a>
       </div>
     </form>

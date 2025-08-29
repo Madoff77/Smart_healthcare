@@ -7,6 +7,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.utils import timezone
 from django.utils.timezone import make_aware
 from django.views.decorators.http import require_POST
+from django.core.paginator import Paginator 
 
 from .forms import AppointmentCreateForm, AppointmentDoctorUpdateForm
 from .models import Appointment
@@ -63,13 +64,11 @@ def patient_my_appointments(request):
     user = request.user
     if not getattr(user, 'is_patient', False):
         raise PermissionDenied("Réservé aux patients.")
-    appts = Appointment.objects.filter(patient__user=user).order_by('-start_time')
-
-    # ajoute un attribut can_cancel pour l’UX du template
-    for a in appts:
+    qs = Appointment.objects.filter(patient__user=user).order_by('-start_time')
+    page = Paginator(qs, 10).get_page(request.GET.get('page'))
+    for a in page.object_list:
         a.can_cancel = _can_cancel(a)
-
-    return render(request, 'appointments/my_patient.html', {"appts": appts})
+    return render(request, 'appointments/my_patient.html', {"page": page})
 
 
 @login_required
@@ -95,13 +94,11 @@ def doctor_my_appointments(request):
     user = request.user
     if not getattr(user, 'is_doctor', False):
         raise PermissionDenied("Réservé aux médecins.")
-    appts = Appointment.objects.filter(doctor__user=user).order_by('-start_time')
-
-    # ajoute un attribut can_manage pour l’UX du template
-    for a in appts:
+    qs = Appointment.objects.filter(doctor__user=user).order_by('-start_time')
+    page = Paginator(qs, 10).get_page(request.GET.get('page'))
+    for a in page.object_list:
         a.can_manage = _can_manage(a)
-
-    return render(request, 'appointments/my_doctor.html', {"appts": appts})
+    return render(request, 'appointments/my_doctor.html', {"page": page})
 
 
 @login_required

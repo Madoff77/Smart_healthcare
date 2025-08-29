@@ -6,6 +6,7 @@ from django.shortcuts import get_object_or_404, render, redirect
 from django.utils import timezone
 from django.views.decorators.http import require_http_methods
 from django.db.models import Q
+from django.core.paginator import Paginator
 
 from .forms import SymptomCreateForm
 from .models import Symptom
@@ -52,9 +53,11 @@ def my_symptoms(request):
         qs = qs.filter(Q(description__icontains=q))
     if sev:
         qs = qs.filter(severity=sev)
-    items = qs.order_by('-created_at')
-    return render(request, 'symptoms/my.html', {"items": items, "q": q or '', "severity": sev or ''})
-
+    qs = qs.order_by('-created_at')
+    page = Paginator(qs, 10).get_page(request.GET.get('page'))  # <-- pagination
+    return render(request, 'symptoms/my.html', {
+        "page": page, "q": q or '', "severity": sev or ''
+    })
 
 @login_required
 def doctor_symptoms(request):
@@ -69,13 +72,16 @@ def doctor_symptoms(request):
         qs = qs.filter(
             Q(description__icontains=q) |
             Q(patient__user__first_name__icontains=q) |
-            Q(patient__user__last_name__icontains=q)
+            Q(patient__user__last_name__icontains=q) |
+            Q(patient__user__username__icontains=q)
         )
     if sev:
         qs = qs.filter(severity=sev)
-    items = qs.order_by('-created_at')
-    return render(request, 'symptoms/doctor_list.html', {"items": items, "q": q or '', "severity": sev or ''})
-
+    qs = qs.order_by('-created_at')
+    page = Paginator(qs, 10).get_page(request.GET.get('page'))  # <-- pagination
+    return render(request, 'symptoms/doctor_list.html', {
+        "page": page, "q": q or '', "severity": sev or ''
+    })
 
 @login_required
 def new_symptom(request):

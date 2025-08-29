@@ -29,4 +29,17 @@
   {% else %}
     <div class="card">Aucun rendez-vous pour le moment.</div>
   {% endif %}
+  {% if page.object_list %}
+  <table class="table"> … {% for a in page.object_list %} … {% endfor %}</table>
+  {% if page.paginator.num_pages > 1 %}
+    <p>
+      {% if page.has_previous %}<a class="btn" href="?page={{ page.previous_page_number }}">←</a>{% endif %}
+      Page {{ page.number }}/{{ page.paginator.num_pages }}
+      {% if page.has_next %}<a class="btn" href="?page={{ page.next_page_number }}">→</a>{% endif %}
+    </p>
+  {% endif %}
+{% else %}
+  <div class="card">Aucun rendez-vous pour le moment.</div>
+{% endif %}
+
 {% endblock %}

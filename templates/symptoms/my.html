@@ -28,7 +28,7 @@
         {% for s in items %}
           <tr>
             <td>{{ s.created_at|date:"d/m/Y H:i" }}</td>
-            <td>{{ s.get_severity_display|default:"—" }}</td>
+            <td><span class="badge {{ s.severity|default:'mild' }}">{{ s.get_severity_display|default:"—" }}</span></td>
             <td>{{ s.description|linebreaksbr }}</td>
             <td>
               <a class="btn" href="{% url 'symptoms_html:edit_symptom' s.id %}">Modifier</a>
@@ -41,4 +41,39 @@
   {% else %}
     <div class="card">Aucun symptôme enregistré.</div>
   {% endif %}
+
+{% if page.object_list %}
+  <table class="table">
+    <thead>
+      <tr><th>Date</th><th>Sévérité</th><th>Description</th><th>Actions</th></tr>
+    </thead>
+    <tbody>
+      {% for s in page.object_list %}
+        <tr>
+          <td>{{ s.created_at|date:"d/m/Y H:i" }}</td>
+          <td><span class="badge {{ s.severity|default:'mild' }}">{{ s.get_severity_display|default:"—" }}</span></td>
+          <td>{{ s.description|linebreaksbr }}</td>
+          <td>
+            <a class="btn" href="{% url 'symptoms_html:edit_symptom' s.id %}">Modifier</a>
+            <a class="btn danger" href="{% url 'symptoms_html:delete_symptom' s.id %}">Supprimer</a>
+          </td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+  {% if page.paginator.num_pages > 1 %}
+    <p>
+      {% if page.has_previous %}
+        <a class="btn" href="?page={{ page.previous_page_number }}&q={{ q }}&severity={{ severity }}">←</a>
+      {% endif %}
+      Page {{ page.number }}/{{ page.paginator.num_pages }}
+      {% if page.has_next %}
+        <a class="btn" href="?page={{ page.next_page_number }}&q={{ q }}&severity={{ severity }}">→</a>
+      {% endif %}
+    </p>
+  {% endif %}
+{% else %}
+  <div class="card">Aucun symptôme enregistré.</div>
+{% endif %}
 {% endblock %}
